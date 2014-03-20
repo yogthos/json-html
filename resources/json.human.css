@@ -24,6 +24,11 @@
     color: #839B00;
 }
 
+.jh-type-date{
+    font-style: italic;
+    color: #839C00;
+}
+
 .jh-array-key{
     font-style: italic;
     font-size: small;
