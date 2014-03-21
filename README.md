@@ -16,9 +16,13 @@ Provide JSON and get a DOM node with a human representation of that JSON. Based 
 (use 'json-html.core)
 
 (edn->html {:foo [1 2 3] :bar "baz"})
+```
+<div class=\"jh-root\"><table class=\"jh-type-object\"><tr><th class=\"jh-key jh-object-key\">foo</th><td class=\"jh-value jh-object-value\"><table class=\"jh-type-object\"><tr><th class=\"jh-key jh-array-key\">0</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">1</span></td></tr><tr><th class=\"jh-key jh-array-key\">1</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">2</span></td></tr><tr><th class=\"jh-key jh-array-key\">2</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">3</span></td></tr></table></td></tr><tr><th class=\"jh-key jh-object-key\">bar</th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\">baz</span></td></tr></table></div>
 
+```clojure
 (json->html "{\"foo\": [1, 2, 3], \"bar\": \"baz\"}")
 ```
+<div class=\"jh-root\"><table class=\"jh-type-object\"><tr><th class=\"jh-key jh-object-key\">foo</th><td class=\"jh-value jh-object-value\"><table class=\"jh-type-object\"><tr><th class=\"jh-key jh-array-key\">0</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">1</span></td></tr><tr><th class=\"jh-key jh-array-key\">1</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">2</span></td></tr><tr><th class=\"jh-key jh-array-key\">2</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">3</span></td></tr></table></td></tr><tr><th class=\"jh-key jh-object-key\">bar</th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\">baz</span></td></tr></table></div>
 
 A default CSS is provided in `resources/json.human.css`.
 
