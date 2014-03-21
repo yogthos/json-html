@@ -71,3 +71,6 @@ A default CSS is provided in `resources/json.human.css`.
  JSON to human readable
  HTML</span></td></tr><tr><th class="jh-key jh-object-key">bugs</th><td class="jh-value jh-object-value"><table class="jh-type-object"><tr><th class="jh-key jh-object-key">url</th><td class="jh-value jh-object-value"><span class="jh-type-string">https://github.com/yogthos/json-html/issues</span></td></tr></table></td></tr></table></div>
  
+## License?
+
+[MIT](http://opensource.org/licenses/MIT)
