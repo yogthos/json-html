@@ -2,6 +2,28 @@
 
 Provide JSON and get a DOM node with a human representation of that JSON. Based on the [json.human.js](http://marianoguerra.github.io/json.human.js/) library.
 
+## Installation
+
+#### Leiningen
+
+```clojure
+[json-html "0.1.0"]
+```
+
+## Usage
+
+```clojure
+(use 'json-html.core)
+
+(edn->html {:foo [1 2 3] :bar "baz"})
+
+(json->html "{\"foo\": [1, 2, 3], \"bar\": \"baz\"}")
+```
+
+A default CSS is provided in `resources/json.human.css`.
+
+## Example:
+
 ### Input JSON:
 
 ```javascript
