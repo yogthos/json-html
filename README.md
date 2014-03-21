@@ -1,6 +1,6 @@
 ## json-html
 
-Provide JSON and get a DOM node with a human representation of that JSON. Based on the [json.human.js](http://marianoguerra.github.io/json.human.js/) library.
+Generates a DOM node with a human representation of the JSON/EDN encoded data. Based on the [json.human.js](http://marianoguerra.github.io/json.human.js/) library.
 
 ## Installation
 
