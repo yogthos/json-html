@@ -11,11 +11,11 @@
   nil
   (render [_] [:span.jh-empty nil])
 
-  java.util.Date 
+  java.util.Date
   (render [this]
     [:span.jh-type-date
       (.format (new java.text.SimpleDateFormat "MMM dd, yyyy HH:mm:ss") this)])
-  
+
   String
   (render [this] [:span.jh-type-string (escape-html this)])
 
@@ -36,7 +36,7 @@
 
   Keyword
   (render [this] [:span.jh-type-string (name this)])
-  
+
   IPersistentMap
   (render [this]
     [:table.jh-type-object
@@ -50,10 +50,10 @@
       (for [[i v] (map-indexed vector this)]
         [:tr [:th.jh-key.jh-array-key i]
              [:td.jh-value.jh-array-value (render v)]])])
-  
+
   Object
   (render [this]
-    [:span.jh-type-object (bean this)]))
+    [:span.jh-type-string (.toString this)]))
 
 
 (defn edn->html [edn]
