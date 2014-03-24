@@ -9,6 +9,22 @@
  padding: 0.2em;
 }
 
+.jh-empty-collection:before {
+  content: '[]';
+}
+
+.jh-empty-map:before {
+  content: '{}';
+}
+
+.jh-empty-set:before {
+  content: '#{}';
+}
+
+.jh-empty-string:before {
+  content: '""';
+}
+
 .jh-value{
     border-left: 1px solid #ddd;
 }
