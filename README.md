@@ -7,7 +7,7 @@ Generates a DOM node with a human representation of the JSON/EDN encoded data. B
 #### Leiningen
 
 ```clojure
-[json-html "0.1.0"]
+[json-html "0.2.0"]
 ```
 
 ## Usage
