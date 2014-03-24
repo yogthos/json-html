@@ -2,7 +2,7 @@
   (:require [cheshire.core :refer :all]
             [hiccup.core :refer [html]]
             [hiccup.util :refer [escape-html]])
-  (:import [clojure.lang IPersistentMap IPersistentCollection Keyword]))
+  (:import [clojure.lang IPersistentMap IPersistentSet IPersistentCollection Keyword]))
 
 (defprotocol Render
   (render [this] "Renders the element a Hiccup structure"))
@@ -14,11 +14,11 @@
   java.util.Date
   (render [this]
     [:span.jh-type-date
-      (.format (new java.text.SimpleDateFormat "MMM dd, yyyy HH:mm:ss") this)])
+      (.format (java.text.SimpleDateFormat. "MMM dd, yyyy HH:mm:ss") this)])
 
-  String
-  (render [this] [:span.jh-type-string (escape-html this)])
-
+  Character
+  (render [this] [:span.jh-type-string (str this)])
+  
   Boolean
   (render [this] [:span.jh-type-bool this])
 
@@ -37,19 +37,35 @@
   Keyword
   (render [this] [:span.jh-type-string (name this)])
 
+  String
+  (render [this] [:span.jh-type-string
+                  (if (.isEmpty (.trim this))
+                    [:span.jh-empty-string]
+                    (escape-html this))])
+
   IPersistentMap
   (render [this]
-    [:table.jh-type-object
-      (for [[k v] this]
-        [:tr [:th.jh-key.jh-object-key k]
-             [:td.jh-value.jh-object-value (render v)]])])
+    (if (empty? this)
+      [:div.jh-type-object [:span.jh-empty-map]]
+      [:table.jh-type-object
+        (for [[k v] this]
+          [:tr [:th.jh-key.jh-object-key k]
+               [:td.jh-value.jh-object-value (render v)]])]))
 
+  IPersistentSet
+  (render [this]
+    (if (empty? this)
+      [:div.jh-type-set [:span.jh-empty-set]]
+      [:ul (for [item this] [:li.jh-value (render item)])]))
+  
   IPersistentCollection
   (render [this]
-    [:table.jh-type-object
-      (for [[i v] (map-indexed vector this)]
-        [:tr [:th.jh-key.jh-array-key i]
-             [:td.jh-value.jh-array-value (render v)]])])
+    (if (empty? this)
+      [:div.jh-type-object [:span.jh-empty-collection]]
+      [:table.jh-type-object
+        (for [[i v] (map-indexed vector this)]
+          [:tr [:th.jh-key.jh-array-key i]
+               [:td.jh-value.jh-array-value (render v)]])]))
 
   Object
   (render [this]
@@ -63,4 +79,3 @@
 
 (defn json->html [json]
   (-> json (parse-string false) edn->html))
-
