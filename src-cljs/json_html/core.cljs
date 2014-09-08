@@ -1,0 +1,57 @@
+(ns json-html.core
+  (:require [clojure.string :as st]))
+
+(defn escape-html [s]
+  (st/escape s
+          {"&"  "&amp;"
+           ">"  "&gt;"
+           "<"  "&lt;"
+           "\"" "&quot;"}))
+
+(declare render)
+
+(defn render-collection [col]
+  (if (empty? col)
+    [:div.jh-type-object [:span.jh-empty-collection]]
+    [:table.jh-type-object
+      (for [[i v] (map-indexed vector col)]
+        [:tr [:th.jh-key.jh-array-key i]
+             [:td.jh-value.jh-array-value (render v)]])]))
+
+(defn render-set [s]
+  (if (empty? s)
+    [:div.jh-type-set [:span.jh-empty-set]]
+    [:ul (for [item s] [:li.jh-value (render item)])]))
+
+(defn render-map [m]
+    (if (empty? m)
+      [:div.jh-type-object [:span.jh-empty-map]]
+      [:table.jh-type-object
+        (for [[k v] m]
+          [:tr [:th.jh-key.jh-object-key (name k)]
+               [:td.jh-value.jh-object-value (render v)]])]))
+
+(defn render-string [s]
+  [:span.jh-type-string
+   (if (st/blank? s)
+     [:span.jh-empty-string]
+     (escape-html s))])
+
+(defn render [v]
+    (let [t (type v)]
+      (cond
+       (= t Keyword) [:span.jh-type-string (name v)]
+       (= t js/String) [:span.jh-type-string (escape-html v)]
+       (= t js/Date) [:span.jh-type-date (.toString v)]
+       (= t js/Boolean) [:span.jh-type-bool v]
+       (= t js/Number) [:span.jh-type-number v]
+       (satisfies? IMap v) (render-map v)
+       (satisfies? ISet v) (render-set v)
+       (satisfies? ICollection v) (render-collection v)
+       nil [:span.jh-empty nil])))
+
+(defn edn->html [edn]
+  (render edn))
+
+(defn json->html [json]
+  (render (js->clj json)))
