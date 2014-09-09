@@ -1,4 +1,4 @@
-(defproject json-html "0.2.1"
+(defproject json-html "0.2.2"
   :description "Provide JSON and get a DOM node with a human representation of that JSON"
   :url "https://github.com/yogthos/json-html"
   :license {:name "MIT License"
@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2322"]
                  [hiccup "1.0.5"]
+                 [hiccups "0.3.0"]
                  [cheshire "5.3.1"]]
   :plugins [[lein-cljsbuild "1.0.3"]]
   :hooks [leiningen.cljsbuild]

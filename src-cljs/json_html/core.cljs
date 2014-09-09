@@ -1,5 +1,7 @@
 (ns json-html.core
-  (:require [clojure.string :as st]))
+  (:require [clojure.string :as st]
+            [hiccups.runtime :as hiccupsrt])
+  (:require-macros [hiccups.core :as hiccups]))
 
 (defn escape-html [s]
   (st/escape s
@@ -50,8 +52,15 @@
        (satisfies? ICollection v) (render-collection v)
        nil [:span.jh-empty nil])))
 
-(defn edn->html [edn]
+(defn edn->hiccup [edn]
   (render edn))
 
-(defn json->html [json]
+(defn edn->html [edn]
+  (hiccups/html (edn->hiccup edn)))
+
+(defn json->hiccup [json]
   (render (js->clj json)))
+
+(defn json->html [json]
+  (hiccups/html (json->hiccup json)))
+
