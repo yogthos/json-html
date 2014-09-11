@@ -39,7 +39,7 @@ A default CSS is provided in `resources/json.human.css` and can be included as f
      (.getResource r)
      slurp))
 
-(spit “formatted.html"
+(spit "formatted.html"
      (html5
       [:head [:style (resource "json.human.css")]]
       (edn->html [:foo "bar" :baz [1 2 3]])))
