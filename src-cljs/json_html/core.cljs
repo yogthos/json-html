@@ -16,9 +16,10 @@
   (if (empty? col)
     [:div.jh-type-object [:span.jh-empty-collection]]
     [:table.jh-type-object
+     [:tbody
       (for [[i v] (map-indexed vector col)]
         [:tr [:th.jh-key.jh-array-key i]
-             [:td.jh-value.jh-array-value (render v)]])]))
+             [:td.jh-value.jh-array-value (render v)]])]]))
 
 (defn render-set [s]
   (if (empty? s)
@@ -26,12 +27,13 @@
     [:ul (for [item s] [:li.jh-value (render item)])]))
 
 (defn render-map [m]
-    (if (empty? m)
-      [:div.jh-type-object [:span.jh-empty-map]]
-      [:table.jh-type-object
-        (for [[k v] m]
-          [:tr [:th.jh-key.jh-object-key (name k)]
-               [:td.jh-value.jh-object-value (render v)]])]))
+  (if (empty? m)
+    [:div.jh-type-object [:span.jh-empty-map]]
+    [:table.jh-type-object
+     [:tbody
+      (for [[k v] m]
+        [:tr [:th.jh-key.jh-object-key (name k)]
+             [:td.jh-value.jh-object-value (render v)]])]]))
 
 (defn render-string [s]
   [:span.jh-type-string
