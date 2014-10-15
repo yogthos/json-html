@@ -18,7 +18,7 @@
 
   Character
   (render [this] [:span.jh-type-string (str this)])
-  
+
   Boolean
   (render [this] [:span.jh-type-bool this])
 
@@ -48,24 +48,26 @@
     (if (empty? this)
       [:div.jh-type-object [:span.jh-empty-map]]
       [:table.jh-type-object
-        (for [[k v] this]
+        [:tbody
+         (for [[k v] this]
           [:tr [:th.jh-key.jh-object-key k]
-               [:td.jh-value.jh-object-value (render v)]])]))
+               [:td.jh-value.jh-object-value (render v)]])]]))
 
   IPersistentSet
   (render [this]
     (if (empty? this)
       [:div.jh-type-set [:span.jh-empty-set]]
       [:ul (for [item this] [:li.jh-value (render item)])]))
-  
+
   IPersistentCollection
   (render [this]
     (if (empty? this)
       [:div.jh-type-object [:span.jh-empty-collection]]
       [:table.jh-type-object
-        (for [[i v] (map-indexed vector this)]
-          [:tr [:th.jh-key.jh-array-key i]
-               [:td.jh-value.jh-array-value (render v)]])]))
+        [:tbody
+          (for [[i v] (map-indexed vector this)]
+             [:tr [:th.jh-key.jh-array-key i]
+                  [:td.jh-value.jh-array-value (render v)]])]]))
 
   Object
   (render [this]
