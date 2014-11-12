@@ -32,7 +32,7 @@
     [:table.jh-type-object
      [:tbody
       (for [[k v] m]
-        [:tr [:th.jh-key.jh-object-key (name k)]
+        [:tr [:th.jh-key.jh-object-key (name (keyword k))]
              [:td.jh-value.jh-object-value (render v)]])]]))
 
 (defn render-string [s]
