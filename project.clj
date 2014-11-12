@@ -1,4 +1,4 @@
-(defproject json-html "0.2.2"
+(defproject json-html "0.2.4"
   :description "Provide JSON and get a DOM node with a human representation of that JSON"
   :url "https://github.com/yogthos/json-html"
   :license {:name "MIT License"
