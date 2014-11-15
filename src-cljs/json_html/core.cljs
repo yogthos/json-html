@@ -10,6 +10,9 @@
            "<"  "&lt;"
            "\"" "&quot;"}))
 
+(defn render-key [k]
+  (->> k keyword ((juxt namespace name)) (remove nil?) (clojure.string/join "/")))
+
 (declare render)
 
 (defn render-collection [col]
@@ -32,7 +35,7 @@
     [:table.jh-type-object
      [:tbody
       (for [[k v] m]
-        [:tr [:th.jh-key.jh-object-key (name (keyword k))]
+        [:tr [:th.jh-key.jh-object-key (render-key k)]
              [:td.jh-value.jh-object-value (render v)]])]]))
 
 (defn render-string [s]

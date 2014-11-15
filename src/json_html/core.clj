@@ -4,6 +4,11 @@
             [hiccup.util :refer [escape-html]])
   (:import [clojure.lang IPersistentMap IPersistentSet IPersistentCollection Keyword]))
 
+(defn render-key [k]
+  (if (instance? clojure.lang.Named k)
+    (->> k keyword ((juxt namespace name)) (remove nil?) (clojure.string/join "/"))
+    (str k)))
+
 (defprotocol Render
   (render [this] "Renders the element a Hiccup structure"))
 
@@ -50,7 +55,7 @@
       [:table.jh-type-object
         [:tbody
          (for [[k v] this]
-          [:tr [:th.jh-key.jh-object-key k]
+          [:tr [:th.jh-key.jh-object-key (render-key k)]
                [:td.jh-value.jh-object-value (render v)]])]]))
 
   IPersistentSet
@@ -81,3 +86,5 @@
 
 (defn json->html [json]
   (-> json (parse-string false) edn->html))
+
+
