@@ -10,8 +10,11 @@
            "<"  "&lt;"
            "\"" "&quot;"}))
 
+(fn try-ns [k]
+  (try (namespace k) (catch js/Error _)))
+
 (defn render-key [k]
-  (->> k keyword ((juxt namespace name)) (remove nil?) (clojure.string/join "/")))
+  (->> k keyword ((juxt try-ns name)) (remove nil?) (clojure.string/join "/")))
 
 (declare render)
 
