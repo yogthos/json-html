@@ -10,7 +10,7 @@
            "<"  "&lt;"
            "\"" "&quot;"}))
 
-(fn try-ns [k]
+(defn try-ns [k]
   (try (namespace k) (catch js/Error _)))
 
 (defn render-key [k]
