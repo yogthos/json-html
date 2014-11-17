@@ -10,11 +10,8 @@
            "<"  "&lt;"
            "\"" "&quot;"}))
 
-(defn try-ns [k]
-  (try (namespace k) (catch js/Error _)))
-
 (defn render-keyword [k]
-  (->> k keyword ((juxt try-ns name)) (remove nil?) (clojure.string/join "/")))
+  (->> k ((juxt namespace name)) (remove nil?) (clojure.string/join "/")))
 
 (declare render)
 
@@ -71,4 +68,3 @@
 
 (defn json->html [json]
   (hiccups/html (json->hiccup json)))
-
