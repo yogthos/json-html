@@ -13,7 +13,7 @@
 (defn try-ns [k]
   (try (namespace k) (catch js/Error _)))
 
-(defn render-key [k]
+(defn render-keyword [k]
   (->> k keyword ((juxt try-ns name)) (remove nil?) (clojure.string/join "/")))
 
 (declare render)
@@ -38,7 +38,7 @@
     [:table.jh-type-object
      [:tbody
       (for [[k v] m]
-        [:tr [:th.jh-key.jh-object-key (render-key k)]
+        [:tr [:th.jh-key.jh-object-key (render k)]
              [:td.jh-value.jh-object-value (render v)]])]]))
 
 (defn render-string [s]
@@ -50,7 +50,7 @@
 (defn render [v]
     (let [t (type v)]
       (cond
-       (= t Keyword) [:span.jh-type-string (name v)]
+       (= t Keyword) [:span.jh-type-string (render-keyword v)]
        (= t js/String) [:span.jh-type-string (escape-html v)]
        (= t js/Date) [:span.jh-type-date (.toString v)]
        (= t js/Boolean) [:span.jh-type-bool v]
