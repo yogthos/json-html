@@ -50,7 +50,7 @@
        (= t Keyword) [:span.jh-type-string (render-keyword v)]
        (= t js/String) [:span.jh-type-string (escape-html v)]
        (= t js/Date) [:span.jh-type-date (.toString v)]
-       (= t js/Boolean) [:span.jh-type-bool v]
+       (= t js/Boolean) [:span.jh-type-bool (str v)]
        (= t js/Number) [:span.jh-type-number v]
        (satisfies? IMap v) (render-map v)
        (satisfies? ISet v) (render-set v)
