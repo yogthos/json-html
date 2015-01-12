@@ -52,7 +52,7 @@
       [:div.jh-type-object [:span.jh-empty-map]]
       [:table.jh-type-object
         [:tbody
-         (for [[k v] this]
+         (for [[k v] (into (sorted-map) this)]
           [:tr [:th.jh-key.jh-object-key (render k)]
                [:td.jh-value.jh-object-value (render v)]])]]))
 
@@ -60,7 +60,7 @@
   (render [this]
     (if (empty? this)
       [:div.jh-type-set [:span.jh-empty-set]]
-      [:ul (for [item this] [:li.jh-value (render item)])]))
+      [:ul (for [item (sort this)] [:li.jh-value (render item)])]))
 
   IPersistentCollection
   (render [this]

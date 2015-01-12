@@ -27,14 +27,14 @@
 (defn render-set [s]
   (if (empty? s)
     [:div.jh-type-set [:span.jh-empty-set]]
-    [:ul (for [item s] [:li.jh-value (render item)])]))
+    [:ul (for [item (sort s)] [:li.jh-value (render item)])]))
 
 (defn render-map [m]
   (if (empty? m)
     [:div.jh-type-object [:span.jh-empty-map]]
     [:table.jh-type-object
      [:tbody
-      (for [[k v] m]
+      (for [[k v] (into (sorted-map) m)]
         [:tr [:th.jh-key.jh-object-key (render k)]
              [:td.jh-value.jh-object-value (render v)]])]]))
 
