@@ -33,15 +33,9 @@ A default CSS is provided in `resources/json.human.css` and can be included as f
 (ns foo
   (:use json-html.core hiccup.page))
 
-(defn resource [r]
- (-> (Thread/currentThread)
-     (.getContextClassLoader)
-     (.getResource r)
-     slurp))
-
 (spit "formatted.html"
      (html5
-      [:head [:style (resource "json.human.css")]]
+      [:head [:style (-> "json.human.css" clojure.java.io/resource slurp)]]
       (edn->html [:foo "bar" :baz [1 2 3]])))
 ```
 
