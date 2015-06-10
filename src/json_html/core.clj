@@ -77,10 +77,20 @@
     [:span.jh-type-string (.toString this)]))
 
 
+(def url-regex ;; good enough...
+  (re-pattern "(\\b(https?|ftp|file|ldap)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|])"))
+
+(defn linkify-links
+  "Make links clickable."
+  [string]
+  (clojure.string/replace string url-regex "<a class='jh-type-string-link' href=$1>$1</a>"))
+
 (defn edn->html [edn]
-  (html
-   [:div.jh-root
-    (render edn)]))
+  (-> (html
+       [:div.jh-root
+        (render edn)])
+      (linkify-links)))
+
 
 (defn json->html [json]
   (-> json (parse-string false) edn->html))
