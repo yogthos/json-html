@@ -34,8 +34,7 @@
     [:div.jh-type-object [:span.jh-empty-map]]
     [:table.jh-type-object
      [:tbody
-      (for [[k v] (->> (into {} (for [[k v] m] [(str k) v]))
-                       (into (sorted-map)))]
+      (for [[k v] (fn [k1 k2] (compare (str k1) (str k2)))]
         [:tr [:th.jh-key.jh-object-key (render k)]
              [:td.jh-value.jh-object-value (render v)]])]]))
 

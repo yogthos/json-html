@@ -38,7 +38,7 @@
   (render [this] [:span.jh-type-number this])
 
   Keyword
-  (render [this] [:span.jh-type-string (name this)])
+  (render [this] [:span.jh-type-string (str this)])
 
   String
   (render [this] [:span.jh-type-string
@@ -52,8 +52,7 @@
       [:div.jh-type-object [:span.jh-empty-map]]
       [:table.jh-type-object
         [:tbody
-         (for [[k v] (->> (into {} (for [[k v] this] [(str k) v]))
-                          (into (sorted-map)))]
+         (for [[k v] (into (sorted-map-by (fn [k1 k2] (compare (str k1) (str k2)))) this)]
           [:tr [:th.jh-key.jh-object-key (render k)]
                [:td.jh-value.jh-object-value (render v)]])]]))
 
