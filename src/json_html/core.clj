@@ -7,6 +7,12 @@
 (defn render-keyword [k]
   (->> k ((juxt namespace name)) (remove nil?) (clojure.string/join "/")))
 
+(defn sort-map [m]
+  (try
+    (into (sorted-map) m)
+    (catch Exception _
+      (into (sorted-map-by (fn [k1 k2] (compare (str k1) (str k2)))) m))))
+
 (defprotocol Render
   (render [this] "Renders the element a Hiccup structure"))
 
@@ -52,7 +58,7 @@
       [:div.jh-type-object [:span.jh-empty-map]]
       [:table.jh-type-object
         [:tbody
-         (for [[k v] (into (sorted-map-by (fn [k1 k2] (compare (str k1) (str k2)))) this)]
+         (for [[k v] (sort-map this)]
           [:tr [:th.jh-key.jh-object-key (render k)]
                [:td.jh-value.jh-object-value (render v)]])]]))
 
