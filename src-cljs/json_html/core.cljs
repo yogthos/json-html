@@ -29,12 +29,18 @@
     [:div.jh-type-set [:span.jh-empty-set]]
     [:ul (for [item (sort s)] [:li.jh-value (render item)])]))
 
+(defn sort-map [m]
+  (try
+    (into (sorted-map) m)
+    (catch js/Error _
+      (into (sorted-map-by (fn [k1 k2] (compare (str k1) (str k2)))) m))))
+
 (defn render-map [m]
   (if (empty? m)
     [:div.jh-type-object [:span.jh-empty-map]]
     [:table.jh-type-object
      [:tbody
-      (for [[k v] (into (sorted-map-by (fn [k1 k2] (compare (str k1) (str k2)))) m)]
+      (for [[k v] (sort-map m)]
         [:tr [:th.jh-key.jh-object-key (render k)]
              [:td.jh-value.jh-object-value (render v)]])]]))
 
