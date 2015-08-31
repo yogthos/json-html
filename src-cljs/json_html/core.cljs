@@ -21,8 +21,8 @@
     [:table.jh-type-object
      [:tbody
       (for [[i v] (map-indexed vector col)]
-        [:tr [:th.jh-key.jh-array-key i]
-             [:td.jh-value.jh-array-value (render v)]])]]))
+        ^{:key i}[:tr [:th.jh-key.jh-array-key i]
+                  [:td.jh-value.jh-array-value (render v)]])]]))
 
 (defn render-set [s]
   (if (empty? s)
@@ -41,8 +41,8 @@
     [:table.jh-type-object
      [:tbody
       (for [[k v] (sort-map m)]
-        [:tr [:th.jh-key.jh-object-key (render k)]
-             [:td.jh-value.jh-object-value (render v)]])]]))
+        ^{:key k}[:tr [:th.jh-key.jh-object-key (render k)]
+                  [:td.jh-value.jh-object-value (render v)]])]]))
 
 (defn render-string [s]
   [:span.jh-type-string
