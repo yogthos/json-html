@@ -13,6 +13,21 @@
 (defn render-keyword [k]
   (->> k ((juxt namespace name)) (remove nil?) (clojure.string/join "/")))
 
+(defn str-compare [k1 k2]
+  (compare (str k1) (str k2)))
+
+(defn sort-map [m]
+  (try
+    (into (sorted-map) m)
+    (catch js/Error _
+      (into (sorted-map-by str-compare) m))))
+
+(defn sort-set [s]
+  (try
+    (into (sorted-set) s)
+    (catch js/Error _
+      (into (sorted-set-by str-compare) s))))
+
 (declare render)
 
 (defn render-collection [col]
@@ -27,13 +42,9 @@
 (defn render-set [s]
   (if (empty? s)
     [:div.jh-type-set [:span.jh-empty-set]]
-    [:ul (for [item (sort s)] [:li.jh-value (render item)])]))
+    [:ul (for [item (sort-set s)] [:li.jh-value (render item)])]))
 
-(defn sort-map [m]
-  (try
-    (into (sorted-map) m)
-    (catch js/Error _
-      (into (sorted-map-by (fn [k1 k2] (compare (str k1) (str k2)))) m))))
+
 
 (defn render-map [m]
   (if (empty? m)

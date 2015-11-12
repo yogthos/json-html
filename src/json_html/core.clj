@@ -7,11 +7,20 @@
 (defn render-keyword [k]
   (->> k ((juxt namespace name)) (remove nil?) (clojure.string/join "/")))
 
+(defn str-compare [k1 k2]
+  (compare (str k1) (str k2)))
+
 (defn sort-map [m]
   (try
     (into (sorted-map) m)
     (catch Exception _
-      (into (sorted-map-by (fn [k1 k2] (compare (str k1) (str k2)))) m))))
+      (into (sorted-map-by str-compare) m))))
+
+(defn sort-set [s]
+  (try
+    (into (sorted-set) s)
+    (catch Exception _
+      (into (sorted-set-by str-compare) s))))
 
 (defprotocol Render
   (render [this] "Renders the element a Hiccup structure"))
@@ -66,7 +75,7 @@
   (render [this]
     (if (empty? this)
       [:div.jh-type-set [:span.jh-empty-set]]
-      [:ul (for [item (sort this)] [:li.jh-value (render item)])]))
+      [:ul (for [item (sort-set this)] [:li.jh-value (render item)])]))
 
   IPersistentCollection
   (render [this]
