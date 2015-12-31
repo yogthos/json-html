@@ -1,19 +1,20 @@
-(defproject json-html "0.3.7"
+(defproject json-html "0.3.8"
   :description "Provide JSON and get a DOM node with a human representation of that JSON"
   :url "https://github.com/yogthos/json-html"
   :license {:name "MIT License"
             :url "http://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.6.0"]
+  :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "0.0-2322" :scope "provided"]
                  [hiccup "1.0.5"]
                  [hiccups "0.3.0"]
                  [cheshire "5.3.1"]]
-  :plugins [[lein-cljsbuild "1.1.1"]]
-  :hooks [leiningen.cljsbuild]
+
   :clojurescript? true
+  :jar-exclusions [#"\.swp|\.swo|\.DS_Store"]
+  :plugins [[lein-cljsbuild "1.0.3"]]
+  :hooks [leiningen.cljsbuild]
   :cljsbuild
-  {;:crossover-jar true
-   :builds
-   {:main
-     {:jar true
-      :source-paths ["src-cljs"]}}})
+  {:builds
+     {:main
+      {:jar true
+       :source-paths ["src-cljs"]}}})
