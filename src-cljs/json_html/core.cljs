@@ -65,6 +65,7 @@
     (let [t (type v)]
       (cond
        (= t Keyword) [:span.jh-type-string (render-keyword v)]
+       (= t Symbol) [:span.jh-type-string (str v)]
        (= t js/String) [:span.jh-type-string (escape-html v)]
        (= t js/Date) [:span.jh-type-date (.toString v)]
        (= t js/Boolean) [:span.jh-type-bool (str v)]

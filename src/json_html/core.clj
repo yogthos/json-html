@@ -2,7 +2,7 @@
   (:require [cheshire.core :refer :all]
             [hiccup.core :refer [html]]
             [hiccup.util :refer [escape-html]])
-  (:import [clojure.lang IPersistentMap IPersistentSet IPersistentCollection Keyword]))
+  (:import [clojure.lang IPersistentMap IPersistentSet IPersistentCollection Keyword Symbol]))
 
 (defn render-keyword [k]
   (->> k ((juxt namespace name)) (remove nil?) (clojure.string/join "/")))
@@ -53,6 +53,9 @@
   (render [this] [:span.jh-type-number this])
 
   Keyword
+  (render [this] [:span.jh-type-string (str this)])
+
+  Symbol
   (render [this] [:span.jh-type-string (str this)])
 
   String
