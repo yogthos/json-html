@@ -11,7 +11,7 @@
 
   :clojurescript? true
   :jar-exclusions [#"\.swp|\.swo|\.DS_Store"]
-  :plugins [[lein-cljsbuild "1.0.3"]]
+  :plugins [[lein-cljsbuild "1.1.3"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild
   {:builds
