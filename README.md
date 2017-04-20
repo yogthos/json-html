@@ -46,9 +46,9 @@ covered data types are rendered, extend the `json-html.core/IRenderHTML` protoco
 to render `UUID`s in the same way you would render its backing string, add this snippet in your code:
 
 ```clj
-(extend-protocol json-html.core/IRenderHTML
+(extend-protocol json-html.core/Render
   cljs.core/UUID
-  (render-html [u]
+  (render [u]
     [:span.jh-type-string (str u)]))
 ```
 

@@ -1,6 +1,9 @@
 (ns json-html.core-test
-  (:require [clojure.test :refer :all]
-            [json-html.core :refer :all]))
+  (:require
+    [json-html.core :refer :all]
+    #?(:clj
+    [clojure.test :refer :all]
+       :cljs [cljs.test :refer-macros [is are deftest testing use-fixtures]])))
 
 (def json-input
   "{
@@ -43,15 +46,35 @@
   "<div class=\"jh-root\"><table class=\"jh-type-object\"><tbody><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:date</span></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-date\">Jan 01, 1979 00:00:00</span></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:empty-set</span></th><td class=\"jh-value jh-object-value\"><div class=\"jh-type-set\"><span class=\"jh-empty-set\"></span></div></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:list</span></th><td class=\"jh-value jh-object-value\"><table class=\"jh-type-object\"><tbody><tr><th class=\"jh-key jh-array-key\">0</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">1</span></td></tr><tr><th class=\"jh-key jh-array-key\">1</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">2</span></td></tr><tr><th class=\"jh-key jh-array-key\">2</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-number\">3</span></td></tr></tbody></table></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:map</span></th><td class=\"jh-value jh-object-value\"><table class=\"jh-type-object\"><tbody><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:foo</span></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\">bar</span></td></tr></tbody></table></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:nil</span></th><td class=\"jh-value jh-object-value\"><span class=\"jh-empty\"></span></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:object</span></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\">[1, 2]</span></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:set</span></th><td class=\"jh-value jh-object-value\"><ul><li class=\"jh-value\"><span class=\"jh-type-number\">1</span></li><li class=\"jh-value\"><span class=\"jh-type-number\">2</span></li><li class=\"jh-value\"><span class=\"jh-type-number\">3</span></li></ul></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\">:vec</span></th><td class=\"jh-value jh-object-value\"><table class=\"jh-type-object\"><tbody><tr><th class=\"jh-key jh-array-key\">0</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-string\">a</span></td></tr><tr><th class=\"jh-key jh-array-key\">1</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-string\">b</span></td></tr><tr><th class=\"jh-key jh-array-key\">2</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-string\">c</span></td></tr></tbody></table></td></tr></tbody></table></div>")
 
 (def edn-input
-  {:date (.parse (java.text.SimpleDateFormat. "yyyy") "1979")
-   :map {:foo "bar"}
-   :list '(1 2 3)
-   :vec [\a \b \c]
-   :set #{1 2 3}
+  {:date      (.parse (java.text.SimpleDateFormat. "yyyy") "1979")
+   :map       {:foo "bar"}
+   :list      '(1 2 3)
+   :vec       [\a \b \c]
+   :set       #{1 2 3}
    :empty-set #{}
-   :nil nil
-   :object (doto (java.util.ArrayList.) (.add 1) (.add 2))})
+   :nil       nil
+   :object    (doto (java.util.ArrayList.) (.add 1) (.add 2))})
 
 (deftest a-test
   (is (= expected-output-from-json (json->html json-input)))
   (is (= expected-output-from-edn (edn->html edn-input))))
+
+(deftest extend-uuid
+  #?(:clj
+     (extend-protocol json-html.core/Render
+       java.util.UUID
+       (render [u]
+         [:span.jh-type-string (str u)]))
+     :cljs
+     (extend-protocol json-html.core/Render
+       cljs.core/UUID
+       (render [u]
+         [:span.jh-type-string (str u)])))
+  (let [uuid #?(:clj (java.util.UUID/randomUUID)
+                :cljs (random-uuid))]
+    (is (=
+          (str
+            "<div class=\"jh-root\"><table class=\"jh-type-object\"><tbody><tr><th class=\"jh-key jh-array-key\">0</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-string\">:uuid</span></td></tr><tr><th class=\"jh-key jh-array-key\">1</th><td class=\"jh-value jh-array-value\"><span class=\"jh-type-string\">"
+            uuid
+            "</span></td></tr></tbody></table></div>")
+          (edn->html [:uuid uuid])))))
