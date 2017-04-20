@@ -28,6 +28,9 @@
     (catch js/Error _
       (into (sorted-set-by str-compare) s))))
 
+(defprotocol IRenderHTML
+  (render-html [v]))
+
 (declare render)
 
 (defn render-collection [col]
@@ -64,6 +67,7 @@
 (defn render [v]
     (let [t (type v)]
       (cond
+       (satisfies? IRenderHTML t) (render-html v)
        (= t Keyword) [:span.jh-type-string (render-keyword v)]
        (= t Symbol) [:span.jh-type-string (str v)]
        (= t js/String) [:span.jh-type-string (escape-html v)]
