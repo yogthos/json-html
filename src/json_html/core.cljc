@@ -134,6 +134,13 @@
                    "<"  "&lt;"
                    "\"" "&quot;"}))
 
+     (defn- obj->clj [obj]
+       (reduce
+         (fn [props k]
+           (assoc props (keyword k) (aget obj k)))
+         {}
+         (js/Object.keys obj)))
+
      (declare render-html)
 
      (defn render-collection [col]
@@ -177,9 +184,11 @@
            (= t js/Date) [:span.jh-type-date (.toString v)]
            (= t js/Boolean) [:span.jh-type-bool (str v)]
            (= t js/Number) [:span.jh-type-number v]
+           (= t js/Array) (render-html (js->clj v))
            (satisfies? IMap v) (render-map v)
            (satisfies? ISet v) (render-set v)
            (satisfies? ICollection v) (render-collection v)
+           (= t js/Object) (render-html (obj->clj v))
            nil [:span.jh-empty nil])))
 
      (defn edn->hiccup [edn]
