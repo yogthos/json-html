@@ -34,6 +34,14 @@
     (catch #?(:clj Exception :cljs js/Error) _
       (into (sorted-set-by str-compare) s))))
 
+(def url-regex                                         ;; good enough...
+  (re-pattern "(\\b(https?|ftp|file|ldap)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|])"))
+
+(defn linkify-links
+  "Make links clickable."
+  [string]
+  (clojure.string/replace string url-regex "<a class='jh-type-string-link' href=$1>$1</a>"))
+
 (defprotocol Render
   (render [this] "Renders the element a Hiccup structure"))
 
@@ -108,14 +116,6 @@
        (render [this]
          [:span.jh-type-string (.toString this)]))
 
-     (def url-regex                                         ;; good enough...
-       (re-pattern "(\\b(https?|ftp|file|ldap)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|])"))
-
-     (defn linkify-links
-       "Make links clickable."
-       [string]
-       (clojure.string/replace string url-regex "<a class='jh-type-string-link' href=$1>$1</a>"))
-
      (defn edn->html [edn]
        (-> (html
              [:div.jh-root
@@ -181,14 +181,15 @@
            (satisfies? ISet v) (render-set v)
            (satisfies? ICollection v) (render-collection v)
            nil [:span.jh-empty nil])))
+
      (defn edn->hiccup [edn]
-       (render-html edn))
+       [:div.jh-root (render-html edn)])
 
      (defn edn->html [edn]
-       (hiccups/html (edn->hiccup edn)))
+       (linkify-links (hiccups/html (edn->hiccup edn))))
 
      (defn json->hiccup [json]
-       (render-html (js->clj json)))
+       [:div.jh-root (render-html (js->clj json))])
 
      (defn json->html [json]
-       (hiccups/html (json->hiccup json)))))
+       (linkify-links (hiccups/html (json->hiccup json))))))

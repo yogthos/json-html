@@ -38,8 +38,8 @@
                    [org.mozilla/rhino "1.7.7"]]}}
 
 
-  :aliases {;"test-cljs" ["doo" "node" "test" "once"]
-            ;"test"      ["do" "test," "test-cljs"]
+  :aliases {"test-cljs" ["doo" "node" "test" "once"]
+            "test"      ["do" "test," "test-cljs"]
             "cleantest" ["do" "clean," "test"]
             "install"   ["do" "clean," "install"]}
   :doo {:build "test"})
