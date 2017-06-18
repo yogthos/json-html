@@ -23,10 +23,17 @@
   (compare (str k1) (str k2)))
 
 (defn sort-map [m]
-  (try
-    (into (sorted-map) m)
-    (catch #?(:clj Exception :cljs js/Error) _
-      (into (sorted-map-by str-compare) m))))
+  #?(:clj  (try
+             (into (sorted-map) m)
+             (catch Exception _
+               (into (sorted-map-by str-compare) m)))
+     :cljs (let [m (mapv (fn [[k v]]
+                           [(if (= (type k) js/Object) (js->clj k) k) v])
+                          m)]
+             (try
+               (into (sorted-map) m)
+               (catch js/Error _
+                 (into (sorted-map-by str-compare) m))))))
 
 (defn sort-set [s]
   (try

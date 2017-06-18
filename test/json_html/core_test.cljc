@@ -88,3 +88,13 @@
             uuid
             "</span></td></tr></tbody></table></div>")
           (edn->html [:uuid uuid])))))
+
+#?(:cljs
+    (deftest compare-obj
+      (let [obj1 (js/eval "({firstName:'John', lastName:'Doe'})")
+            obj2 (js/eval "({firstName:'Jane', lastName:'Doe'})")
+            m    {obj1 :foo obj2 :bar}]
+        (is
+          (=
+            "<div class=\"jh-root\"><table class=\"jh-type-object\"><tbody><tr><th class=\"jh-key jh-object-key\"><table class=\"jh-type-object\"><tbody><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\"><span class=\"jh-type-string\">firstName</span></span></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\"><span class=\"jh-type-string\">Jane</span></span></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\"><span class=\"jh-type-string\">lastName</span></span></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\"><span class=\"jh-type-string\">Doe</span></span></td></tr></tbody></table></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\">:bar</span></td></tr><tr><th class=\"jh-key jh-object-key\"><table class=\"jh-type-object\"><tbody><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\"><span class=\"jh-type-string\">firstName</span></span></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\"><span class=\"jh-type-string\">John</span></span></td></tr><tr><th class=\"jh-key jh-object-key\"><span class=\"jh-type-string\"><span class=\"jh-type-string\">lastName</span></span></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\"><span class=\"jh-type-string\">Doe</span></span></td></tr></tbody></table></th><td class=\"jh-value jh-object-value\"><span class=\"jh-type-string\">:foo</span></td></tr></tbody></table></div>"
+            (edn->html m))))))
