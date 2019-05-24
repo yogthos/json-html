@@ -1,20 +1,20 @@
 (ns json-html.core
   #?(:clj
      (:require
-       [clojure.string :as st]
-       [cheshire.core :refer :all]
-       [hiccup.core :refer [html]]
-       [hiccup.util :refer [escape-html]])
+      [clojure.string :as st]
+      [cheshire.core :refer :all]
+      [hiccup.core :refer [html]]
+      [hiccup.util :refer [escape-html]])
      :cljs
      (:require
-       [clojure.string :as st]
-       [hiccups.runtime :as hiccupsrt]))
+      [clojure.string :as st]
+      [hiccups.runtime :as hiccupsrt]))
   #?(:clj
      (:import
-       [clojure.lang IPersistentMap IPersistentSet IPersistentCollection Keyword Symbol])
+      [clojure.lang IPersistentMap IPersistentSet IPersistentCollection Keyword Symbol])
      :cljs
      (:require-macros
-       [hiccups.core :as hiccups])))
+      [hiccups.core :as hiccups])))
 
 (defn render-keyword [k]
   (str ":" (->> k ((juxt namespace name)) (remove nil?) (st/join "/"))))
@@ -29,7 +29,7 @@
                (into (sorted-map-by str-compare) m)))
      :cljs (let [m (mapv (fn [[k v]]
                            [(if (= (type k) js/Object) (js->clj k) k) v])
-                          m)]
+                         m)]
              (try
                (into (sorted-map) m)
                (catch js/Error _
@@ -125,8 +125,8 @@
 
      (defn edn->html [edn]
        (-> (html
-             [:div.jh-root
-              (render edn)])
+            [:div.jh-root
+             (render edn)])
            (linkify-links)))
 
      (defn json->html [json]
@@ -136,17 +136,17 @@
    (do
      (defn escape-html [s]
        (st/escape s
-                  {"&"  "&amp;"
-                   ">"  "&gt;"
-                   "<"  "&lt;"
+                  {"&" "&amp;"
+                   ">" "&gt;"
+                   "<" "&lt;"
                    "\"" "&quot;"}))
 
      (defn- obj->clj [obj]
        (reduce
-         (fn [props k]
-           (assoc props (keyword k) (aget obj k)))
-         {}
-         (js/Object.keys obj)))
+        (fn [props k]
+          (assoc props (keyword k) (aget obj k)))
+        {}
+        (js/Object.keys obj)))
 
      (declare render-html)
 
@@ -163,8 +163,6 @@
        (if (empty? s)
          [:div.jh-type-set [:span.jh-empty-set]]
          [:ul (for [item (sort-set s)] [:li.jh-value (render-html item)])]))
-
-
 
      (defn render-map [m]
        (if (empty? m)
