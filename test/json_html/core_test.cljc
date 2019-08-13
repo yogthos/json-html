@@ -2,7 +2,8 @@
   #?(:clj
      (:require
        [json-html.core :refer :all]
-       [clojure.test :refer :all])
+       [clojure.test :refer :all]
+       [clojure.data.json :as json])
      :cljs
      (:require
        [json-html.core :refer [edn->html json->html]]
@@ -34,7 +35,7 @@
    "contributors" [],
    "description" "Convert\n JSON to human readable\r HTML"})
 
-(def json-input #?(:clj (cheshire.core/encode default-test-input)
+(def json-input #?(:clj (json/write-str default-test-input)
                    :cljs (clj->js default-test-input)))
 
 (def expected-output-from-json-clj
@@ -65,7 +66,7 @@
                  :cljs
                  #js [1 2])})
 
-(deftest a-test 
+(deftest a-test
   (is (= #?(:clj expected-output-from-json-clj :cljs expected-output-from-json-cljs) (json->html json-input)))
   (is (= #?(:clj expected-output-from-edn-clj :cljs expected-output-from-edn-cljs) (edn->html edn-input))))
 

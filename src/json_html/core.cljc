@@ -1,20 +1,16 @@
 (ns json-html.core
   #?(:clj
      (:require
-      [clojure.string :as st]
-      [cheshire.core :refer :all]
-      [hiccup.core :refer [html]]
-      [hiccup.util :refer [escape-html]])
+       [clojure.data.json :as json]
+       [clojure.string :as st]
+       [json-html.html :refer [html escape-html]])
      :cljs
      (:require
       [clojure.string :as st]
-      [hiccups.runtime :as hiccupsrt]))
+      [json-html.html :refer [html]]))
   #?(:clj
      (:import
-      [clojure.lang IPersistentMap IPersistentSet IPersistentCollection Keyword Symbol])
-     :cljs
-     (:require-macros
-      [hiccups.core :as hiccups])))
+      [clojure.lang IPersistentMap IPersistentSet IPersistentCollection Keyword Symbol])))
 
 (defn render-keyword [k]
   (str ":" (->> k ((juxt namespace name)) (remove nil?) (st/join "/"))))
@@ -130,7 +126,7 @@
            (linkify-links)))
 
      (defn json->html [json]
-       (-> json (parse-string false) edn->html))))
+       (-> json json/read-str edn->html))))
 
 #?(:cljs
    (do
@@ -200,10 +196,10 @@
        [:div.jh-root (render-html edn)])
 
      (defn edn->html [edn]
-       (linkify-links (hiccups/html (edn->hiccup edn))))
+       (linkify-links (html (edn->hiccup edn))))
 
      (defn json->hiccup [json]
        [:div.jh-root (render-html (js->clj json))])
 
      (defn json->html [json]
-       (linkify-links (hiccups/html (json->hiccup json))))))
+       (linkify-links (html (json->hiccup json))))))
