@@ -1,4 +1,4 @@
-(defproject json-html "0.4.6"
+(defproject json-html "0.4.7"
   :description "Provide JSON and get a DOM node with a human representation of that JSON"
   :url "https://github.com/yogthos/json-html"
   :license {:name "MIT License"
@@ -11,7 +11,6 @@
   :plugins
   [[lein-cljsbuild "1.1.7"]
    [lein-figwheel "0.5.18"]
-   [cider/cider-nrepl "0.21.1"]
    [lein-doo "0.1.10"]]
 
   :clojurescript? true
