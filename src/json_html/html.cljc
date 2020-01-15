@@ -53,7 +53,7 @@
 (defn html [hiccup]
   (postwalk
     (fn [node]
-      (if (vector? node)
+      (if (and (not (map-entry? node))(vector? node))
         (-> node normalize-element render-element)
         node))
     hiccup))
